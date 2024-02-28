@@ -1,9 +1,6 @@
-# example-submission-repository
+# Fullstack development with React 
 
-
-You may submit all the exercises of this course into the same repository, or use multiple repositories. If you submit exercises of different parts into the same repository, please use a sensible naming scheme for the directories.
-
-One very functional file structure for the submission repository is as follows:
+Repository structure is as follows:
 
 <pre>
 part0
@@ -16,4 +13,8 @@ part2
   countries
 </pre>
 
-Put the whole react repository of the project to each folder except the folder <i>node_modules</i>
+The <i>part</i> folders correspond to the parts in the [Full Stack course](https://fullstackopen.com/en/#course-contents) of Helsinki University. 
+
+One app per folder, e.g., the app for course information is in folder <i>courseinfo</i>.
+
+The whole React repository of each app is put in each folder except the folder <i>node_modules</i>. 
