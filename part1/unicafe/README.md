@@ -1,4 +1,6 @@
-# React + Vite
+The student restaurant of the University of Helsinki Unicafe collects feedback from its customers. This is a web application for collecting customer feedback with only three options for feedback: good, neutral, and bad.
+
+The application must display the total number of collected feedback for each category.
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
