@@ -14,7 +14,14 @@ const Button = (props) => {
     {props.text}
     </button>
   )
-  
+}
+
+const Total = (props) => {
+  return (
+    <p>
+      {props.text} {props.count}
+    </p>
+  )
 }
 
 const App = () => {
@@ -27,7 +34,16 @@ const App = () => {
     console.log('add a good rating')
     setGood(good + 1)
   }
-    
+
+  const handleNeutral = () => {
+    console.log('add a neutral rating')
+    setNeutral(neutral + 1)
+  }
+
+  const handleBad = () => {
+    console.log('add a bad rating')
+    setBad(bad + 1)
+  }
   
   return (
     <div>
@@ -36,8 +52,18 @@ const App = () => {
         onClick={handleGood} 
         text='good'
       />
-
-    <Header text='Statistics'/>
+      <Button 
+        onClick={handleNeutral} 
+        text='neutral'
+      />
+      <Button 
+        onClick={handleBad} 
+        text='bad'
+      />
+      <Header text='Statistics'/>
+      <Total text='good: ' count={good}/>
+      <Total text='neutral: ' count={neutral}/>
+      <Total text='bad: ' count={bad}/>
     </div>
   )
 }
