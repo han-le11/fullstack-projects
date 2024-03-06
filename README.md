@@ -1,8 +1,8 @@
 # Fullstack development with React 
 Current branches:
 <pre>
-  master
-  part2.1
+master
+part2.1
 </pre>
 Branch <i>part2.1</i> contains the latest refactored version of the app <i>courseinfo</i>.
 
