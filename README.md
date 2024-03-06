@@ -1,7 +1,12 @@
 # Fullstack development with React 
+Current branches:
+<pre>
+  master
+  part2.1
+</pre>
+Branch <i>part2.1</i> contains the latest refactored version of the app <i>courseinfo</i>.
 
 Repository structure is as follows:
-
 <pre>
 part0
 part1
