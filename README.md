@@ -27,7 +27,7 @@ The whole React repository of each app is put in each folder except the folder <
 ## Tools
 The small apps in this repository were created with [Vite](https://vitejs.dev/) by running the command. 
 <pre>
-npm create vite@latest <appname> -- --template react
+npm create vite@latest appname -- --template react
 </pre>
 
 ## How to start an app
