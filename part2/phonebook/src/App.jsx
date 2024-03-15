@@ -4,17 +4,23 @@ import './index.css'
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas' }
+    { name: "Arto Hellas" }
   ]) 
   const [newName, setNewName] = useState('') // controlled component for storing the user-submitted input
-  
-  // event handler, parameter event triggers the function addName
+  const [showAlert, setAlert] = useState(false) // controlled component for displaying an alert 
+
+  // event handler for form submission
   const addName = (event) => {
     event.preventDefault()  // prevents the default action of submitting a form, e.g., reloading page
     console.log('button clicked', event.target)
 
     const personObject = {
       name: newName,
+    }
+    const exists = persons.find(p => p.name === newName)
+    if (exists) {
+      displayAlert()
+      return
     }
 
     setPersons(persons.concat(personObject)) // creates a new copy of the array with the new item concatenated
@@ -27,12 +33,19 @@ const App = () => {
     setNewName(event.target.value)
   }
 
+  // event handler for alert display
+  const displayAlert = () => {
+    console.log("alert displayed")
+    setAlert(true)
+    alert(`${newName} is already added to phonebook`)
+  }
+
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h1>Phonebook App</h1>
       <form onSubmit={addName}>
         <div>
-          name: <input 
+          Name: <input 
                   value={newName}
                   onChange={handleChange}
                 />
@@ -46,11 +59,9 @@ const App = () => {
       <h2>Numbers</h2>
       <div>
         {console.log("current list", persons)}
-        <ul>
-          {persons.map(p => 
-            <Person person={p} key={p.name}/>
-          )}
-        </ul>
+        {persons.map(p => 
+          <Person person={p} key={p.name}/>
+        )}
       </div>
       
     </div>
