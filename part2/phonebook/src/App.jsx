@@ -3,19 +3,18 @@ import Person from './components/Person'
 import './index.css'
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: "Arto Hellas" }
-  ]) 
-  const [newName, setNewName] = useState('') // controlled component for storing the user-submitted input
-  const [showAlert, setAlert] = useState(false) // controlled component for displaying an alert 
+  const [persons, setPersons] = useState([]) 
+  const [newName, setNewName] = useState('') // for storing the user-submitted name
+  const [newNumber, setNewNumber] = useState('') // for storing the user-submitted number
 
-  // event handler for form submission
-  const addName = (event) => {
+  // event handler for form submission of name
+  const addPerson = (event) => {
     event.preventDefault()  // prevents the default action of submitting a form, e.g., reloading page
     console.log('button clicked', event.target)
 
     const personObject = {
       name: newName,
+      number: newNumber,
     }
     const exists = persons.find(p => p.name === newName)
     if (exists) {
@@ -25,34 +24,37 @@ const App = () => {
 
     setPersons(persons.concat(personObject)) // creates a new copy of the array with the new item concatenated
     setNewName('') // resets the value
+    setNewNumber('') 
   }
 
-  // event handler for input change
+  // event handler for name change
   const handleChange = (event) => {
     console.log(event.target.value)
     setNewName(event.target.value)
   }
 
+  // event handler for number change
+  const handleNumberChange = (event) => {
+    console.log(event.target.value)
+    setNewNumber(event.target.value)
+  }
+
   // event handler for alert display
   const displayAlert = () => {
     console.log("alert displayed")
-    setAlert(true)
     alert(`${newName} is already added to phonebook`)
   }
 
   return (
     <div>
       <h1>Phonebook App</h1>
-      <form onSubmit={addName}>
-        <div>
-          Name: <input 
-                  value={newName}
-                  onChange={handleChange}
-                />
-        </div>
+      <form onSubmit={addPerson}>
+        <div>Name: <input value={newName} onChange={handleChange}/></div>
+        <br></br>
+        <div>Number: <input value={newNumber} onChange={handleNumberChange}/></div>
         <br></br>
         <div>
-          <button onClick={addName} type="submit">add</button>
+          <button type="submit">add</button>
         </div>
       </form>
 
@@ -60,7 +62,7 @@ const App = () => {
       <div>
         {console.log("current list", persons)}
         {persons.map(p => 
-          <Person person={p} key={p.name}/>
+          <Person person={p} key={p.name} number={p.number}/>
         )}
       </div>
       
