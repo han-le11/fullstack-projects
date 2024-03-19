@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Person from './components/Person'
 import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
 import './index.css'
 
 const App = () => {
@@ -16,7 +17,7 @@ const App = () => {
   const [searchTerm, setSearchTerm] = useState('') // for search filter
   const [showAll, setShowAll] = useState(true) 
 
-  // event handler for form submission of name
+  // event handler for form submission
   const addPerson = (event) => {
     event.preventDefault()  // prevents the default action of submitting a form, e.g., reloading page
     console.log('button clicked', event.target)
@@ -37,7 +38,7 @@ const App = () => {
   }
 
   // event handler for name change
-  const handleChange = (event) => {
+  const handleNameChange = (event) => {
     console.log(event.target.value)
     setNewName(event.target.value)
   }
@@ -67,21 +68,20 @@ const App = () => {
 
   return (
     <div>
-      <h1>Phonebook App</h1>
+      <h2>Phonebook App</h2>
       <Filter value={searchTerm} onChange={handleSearch}/>
 
-      <h2>Add a new</h2>
-      <form onSubmit={addPerson}>
-        <div>Name: <input value={newName} onChange={handleChange}/></div>
-        <br></br>
-        <div>Number: <input value={newNumber} onChange={handleNumberChange}/></div>
-        <br></br>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <h3>Add a new</h3>
 
-      <h2>Numbers</h2>
+      <PersonForm
+        handleSubmit={addPerson}
+        newName={newName}
+        handleNameChange={handleNameChange}
+        newNumber={newNumber}
+        handleNumberChange={handleNumberChange}
+      />
+      
+      <h3>Numbers</h3>
       <div>
         {personsToShow.map(person => 
           <Person person={person} key={person.name} number={person.number}/>
