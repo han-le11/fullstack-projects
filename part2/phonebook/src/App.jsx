@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import axios from 'axios'
 import Person from './components/Person'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
@@ -11,11 +12,19 @@ const App = () => {
     { name: 'Dan Abramov', number: '12-43-234345'},
     { name: 'Mary Poppendieck', number: '39-23-6423122' }
   ]) 
+
   const [newName, setNewName] = useState('') // for storing the user-submitted name
   const [newNumber, setNewNumber] = useState('') // for storing the user-submitted number
-
   const [searchTerm, setSearchTerm] = useState('') // for search filter
   const [showAll, setShowAll] = useState(true) 
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        setPersons(response.data)
+      })
+  }, [])
 
   // event handler for form submission
   const addPerson = (event) => {
@@ -32,8 +41,15 @@ const App = () => {
       return
     }
 
-    setPersons(persons.concat(personObject)) // creates a new copy of the array with the new item concatenated
-    setNewName('') // resets the value
+    axios
+    .post('http://localhost:3001/persons', personObject)
+    .then(response => {
+      setPersons(persons.concat(response.data))
+      setNewName('')
+    })
+
+    //setPersons(persons.concat(personObject)) // creates a new copy of the array with the new item concatenated
+    //setNewName('') // resets the value
     setNewNumber('') 
   }
 
