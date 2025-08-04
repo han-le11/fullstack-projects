@@ -1,6 +1,13 @@
 # React + Vite
 
-An app to display course information.
+An app to display course information. The component structure of the application is as follows:
+<pre>
+App
+    Course
+        Header
+        Content
+            Part
+</pre>
 
 Currently, two official plugins are available:
 
