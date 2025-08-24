@@ -18,41 +18,74 @@ const Content = (props) => {
 }
 
 const Total = (props) => {
+  // Bold text
   return (
     <div>
       <p>
-        {props.text} {props.total}
+       <strong>{props.text} {props.total}</strong>
       </p>
     </div>
   )
 }
 
 const App = () => {
-  const course = {
-    name: 'Half Stack application development',
-    parts: [
-      {
-        name: 'Fundamentals of React',
-        exercises: 10
-      },
-      {
-        name: 'Using props to pass data',
-        exercises: 7
-      },
-      {
-        name: 'State of a component',
-        exercises: 14
-      }
-    ]
-  }
+  const courses = [
+    {
+      name: 'Half Stack application development',
+      id: 1,
+      parts: [
+        {
+          name: 'Fundamentals of React',
+          exercises: 10,
+          id: 1
+        },
+        {
+          name: 'Using props to pass data',
+          exercises: 7,
+          id: 2
+        },
+        {
+          name: 'State of a component',
+          exercises: 14,
+          id: 3
+        },
+        {
+          name: 'Redux',
+          exercises: 11,
+          id: 4
+        }
+      ]
+    }, 
+    {
+      name: 'Node.js',
+      id: 2,
+      parts: [
+        {
+          name: 'Routing',
+          exercises: 3,
+          id: 1
+        },
+        {
+          name: 'Middlewares',
+          exercises: 7,
+          id: 2
+        }
+      ]
+    }
+  ]
 
   return (
     <div>
-      <Header course={course.name} />
-      <Content name={course.parts[0].name} exercise={course.parts[0].exercises}/>
-      <Content name={course.parts[1].name} exercise={course.parts[1].exercises}/>
-      <Content name={course.parts[2].name} exercise={course.parts[2].exercises}/>
-      <Total text={"Number of exercises"} total={course.parts[0].exercises + course.parts[1].exercises + course.parts[2].exercises}/>
+      <h1>Web Development Curriculum</h1>
+      {courses.map(course => (
+        <div key={course.id}>
+          <Header course={course.name} />
+          {course.parts.map(part => (
+            <Content key={part.id} name={part.name} exercise={part.exercises} />
+          ))}
+          <Total text={`Total of ${course.parts.reduce((sum, part) => sum + part.exercises, 0)} exercises`} />
+        </div>
+      ))}
     </div>
   )
 }
