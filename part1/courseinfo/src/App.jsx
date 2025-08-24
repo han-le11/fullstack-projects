@@ -1,35 +1,10 @@
-const Header = (props) => {
-  return (
-    <div>
-      <h1> {props.course}</h1>
-    </div>
-  )
-}
-
-const Content = (props) => {
-  console.log(props)
-  return (
-    <div>
-      <p>
-        {props.name} {props.exercise}
-      </p>
-    </div>
-  )
-}
-
-const Total = (props) => {
-  // Bold text
-  return (
-    <div>
-      <p>
-       <strong>{props.text} {props.total}</strong>
-      </p>
-    </div>
-  )
-}
+import './index.css'
+import Course from './Course'
 
 const App = () => {
+  // an object for multiple courses and their parts
   const courses = [
+    // Course 1
     {
       name: 'Half Stack application development',
       id: 1,
@@ -56,6 +31,7 @@ const App = () => {
         }
       ]
     }, 
+    // Course 2
     {
       name: 'Node.js',
       id: 2,
@@ -77,15 +53,7 @@ const App = () => {
   return (
     <div>
       <h1>Web Development Curriculum</h1>
-      {courses.map(course => (
-        <div key={course.id}>
-          <Header course={course.name} />
-          {course.parts.map(part => (
-            <Content key={part.id} name={part.name} exercise={part.exercises} />
-          ))}
-          <Total text={`Total of ${course.parts.reduce((sum, part) => sum + part.exercises, 0)} exercises`} />
-        </div>
-      ))}
+      {courses.map(c => <Course key={c.id} course={c} />)}
     </div>
   )
 }
