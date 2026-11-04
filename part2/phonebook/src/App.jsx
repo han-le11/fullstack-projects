@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import Person from './components/Person'
+import Persons from './components/Persons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import './index.css'
@@ -98,11 +98,9 @@ const App = () => {
       />
       
       <h3>Numbers</h3>
-      <div>
-        {personsToShow.map(person => 
-          <Person person={person} key={person.name} number={person.number}/>
-        )}
-      </div>
+
+      <Persons persons={personsToShow} />
+
     </div>
   )
 }
