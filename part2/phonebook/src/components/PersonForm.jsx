@@ -1,3 +1,5 @@
+// This component displays a form for adding a new person
+
 const PersonForm = ({ handleSubmit, newName, handleNameChange, newNumber, handleNumberChange }) => {
     return (
         <form onSubmit={handleSubmit}>
