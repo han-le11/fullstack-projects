@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
+import Notification from './components/Notification.jsx'
 import personService from './services/persons'
 import './index.css'
 
@@ -19,6 +20,8 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')    // for storing the user-submitted number
   const [searchTerm, setSearchTerm] = useState('')  // for search filter
   const [showAll, setShowAll] = useState(true)
+  const [successMessage, setSuccessMessage] = useState(null)
+
 
   // declare effect
     useEffect(() => {
@@ -38,18 +41,32 @@ const App = () => {
       name: newName,
       number: newNumber,
     }
+
     const exists = persons.find(p => p.name === newName)
     if (exists) {
-      displayAlert()
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+        personService
+          .update(exists.id, personObject)
+          .then(returnedPerson => {
+            setPersons(persons.map(p => p.id !== exists.id ? p : returnedPerson))
+            setNewName('')
+            setSuccessMessage(`Updated ${returnedPerson.name}`)
+            setTimeout(() => {setSuccessMessage(null)}, 2000)
+          })
+      }
       return
     }
 
     personService
       .create(personObject)
-      .then(returnedPerson => {
-        setPersons(persons.concat(returnedPerson))
-        setNewName('')
-      })
+      .then(
+          returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
+          setNewName('')
+          setSuccessMessage(`Added ${returnedPerson.name}`)
+          setTimeout(() => {setSuccessMessage(null)}, 2000)
+        }
+      )
 
     setNewNumber('') 
   }
@@ -77,12 +94,6 @@ const App = () => {
     setShowAll(false)
   }
 
-  // event handler for alert display
-  const displayAlert = () => {
-    console.log("alert displayed")
-    alert(`${newName} is already added to phonebook`)
-  }
-
   // event handler for deleting an entry from the phonebook
   const deletePerson = (id, name) => {
     if (!window.confirm(`Delete ${name}?`))
@@ -92,6 +103,13 @@ const App = () => {
       .remove(id)
       .then(() => {
         setPersons(persons.filter(p => p.id !== id)) // filter out person with id to be deleted
+        setSuccessMessage(`Deleted ${name}`)
+        setTimeout(
+        () => {
+            setSuccessMessage(null)
+            },
+            2000
+        )
       })
       .catch(error => {
         console.log("delete failed", error)
@@ -103,6 +121,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook App</h2>
+
+      <Notification message={successMessage} />
       <Filter value={searchTerm} onChange={handleSearch}/>
 
       <h3>Add a new</h3>
@@ -121,7 +141,6 @@ const App = () => {
           persons={personsToShow}
           deletePerson={deletePerson}
       />
-
 
     </div>
   )
