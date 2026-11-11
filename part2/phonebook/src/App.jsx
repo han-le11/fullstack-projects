@@ -9,18 +9,13 @@ import './index.css'
 const App = () => {
 
   // Use setPersons as the updater function that React’s useState hook returns for the persons state
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456' },
-    { name: 'Ada Lovelace', number: '39-44-5323523' },
-    { name: 'Dan Abramov', number: '12-43-234345'},
-    { name: 'Mary Poppendieck', number: '39-23-6423122' }
-  ]) 
+  const [persons, setPersons] = useState([])
 
   const [newName, setNewName] = useState('')        // for storing the user-submitted name
   const [newNumber, setNewNumber] = useState('')    // for storing the user-submitted number
   const [searchTerm, setSearchTerm] = useState('')  // for search filter
   const [showAll, setShowAll] = useState(true)
-  const [successMessage, setSuccessMessage] = useState(null)
+  const [notification, setNotification] = useState(null)   // { message, type } to display, type is 'success' or 'error'
 
 
   // declare effect
@@ -32,6 +27,14 @@ const App = () => {
         })
   }, [])
 
+  // shows a notification for 3 seconds
+  const notify = (message, type = 'success') => {
+    setNotification({ message, type })
+    setTimeout(() => {
+      setNotification(null)
+    }, 3000)
+  }
+
   // event handler for form submission
   const addPerson = (event) => {
     event.preventDefault()  // prevents the default action of submitting a form, e.g., reloading page
@@ -42,6 +45,7 @@ const App = () => {
       number: newNumber,
     }
 
+    // if the added name already exists, replace the old number with a new one if user confirms, otherwise do nothing
     const exists = persons.find(p => p.name === newName)
     if (exists) {
       if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
@@ -50,9 +54,12 @@ const App = () => {
           .then(returnedPerson => {
             setPersons(persons.map(p => p.id !== exists.id ? p : returnedPerson))
             setNewName('')
-            setSuccessMessage(`Updated ${returnedPerson.name}`)
-            setTimeout(() => {setSuccessMessage(null)}, 2000)
+            notify(`Changed the number of ${returnedPerson.name}`, 'success')
           })
+            .catch(error => {
+              console.log('number update failed', error.response.data.error)
+              notify(`Information of ${exists.name} has already been removed from server`, 'error')
+            })
       }
       return
     }
@@ -63,8 +70,7 @@ const App = () => {
           returnedPerson => {
           setPersons(persons.concat(returnedPerson))
           setNewName('')
-          setSuccessMessage(`Added ${returnedPerson.name}`)
-          setTimeout(() => {setSuccessMessage(null)}, 2000)
+          notify(`Added ${returnedPerson.name}`, 'success')
         }
       )
 
@@ -103,13 +109,7 @@ const App = () => {
       .remove(id)
       .then(() => {
         setPersons(persons.filter(p => p.id !== id)) // filter out person with id to be deleted
-        setSuccessMessage(`Deleted ${name}`)
-        setTimeout(
-        () => {
-            setSuccessMessage(null)
-            },
-            2000
-        )
+        notify(`Deleted ${name}`)
       })
       .catch(error => {
         console.log("delete failed", error)
@@ -121,8 +121,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook App</h2>
-
-      <Notification message={successMessage} />
+      <Notification notification={notification} />
       <Filter value={searchTerm} onChange={handleSearch}/>
 
       <h3>Add a new</h3>
