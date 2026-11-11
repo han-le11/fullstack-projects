@@ -6,6 +6,8 @@ import personService from './services/persons'
 import './index.css'
 
 const App = () => {
+
+  // Use setPersons as the updater function that React’s useState hook returns for the persons state
   const [persons, setPersons] = useState([
     { name: 'Arto Hellas', number: '040-123456' },
     { name: 'Ada Lovelace', number: '39-44-5323523' },
@@ -18,7 +20,7 @@ const App = () => {
   const [searchTerm, setSearchTerm] = useState('')  // for search filter
   const [showAll, setShowAll] = useState(true)
 
-  // declare
+  // declare effect
     useEffect(() => {
       personService
         .getAll()
@@ -81,6 +83,23 @@ const App = () => {
     alert(`${newName} is already added to phonebook`)
   }
 
+  // event handler for deleting an entry from the phonebook
+  const deletePerson = (id, name) => {
+    if (!window.confirm(`Delete ${name}?`))
+      return
+
+    personService
+      .remove(id)
+      .then(() => {
+        setPersons(persons.filter(p => p.id !== id)) // filter out person with id to be deleted
+      })
+      .catch(error => {
+        console.log("delete failed", error)
+        alert(`Information of ${name} has already been removed from server`)
+        setPersons(persons.filter(p => p.id !== id))
+      })
+  }
+
   return (
     <div>
       <h2>Phonebook App</h2>
@@ -98,7 +117,11 @@ const App = () => {
       
       <h3>Numbers</h3>
 
-      <Persons persons={personsToShow} />
+      <Persons
+          persons={personsToShow}
+          deletePerson={deletePerson}
+      />
+
 
     </div>
   )
