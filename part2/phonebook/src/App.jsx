@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
+import personService from './services/persons'
 import './index.css'
 
 const App = () => {
@@ -13,17 +13,18 @@ const App = () => {
     { name: 'Mary Poppendieck', number: '39-23-6423122' }
   ]) 
 
-  const [newName, setNewName] = useState('') // for storing the user-submitted name
-  const [newNumber, setNewNumber] = useState('') // for storing the user-submitted number
-  const [searchTerm, setSearchTerm] = useState('') // for search filter
-  const [showAll, setShowAll] = useState(true) 
+  const [newName, setNewName] = useState('')        // for storing the user-submitted name
+  const [newNumber, setNewNumber] = useState('')    // for storing the user-submitted number
+  const [searchTerm, setSearchTerm] = useState('')  // for search filter
+  const [showAll, setShowAll] = useState(true)
 
-  useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
-      })
+  // declare
+    useEffect(() => {
+      personService
+        .getAll()
+        .then(initialPersons => {
+          setPersons(initialPersons)
+        })
   }, [])
 
   // event handler for form submission
@@ -41,15 +42,13 @@ const App = () => {
       return
     }
 
-    axios
-    .post('http://localhost:3001/persons', personObject)
-    .then(response => {
-      setPersons(persons.concat(response.data))
-      setNewName('')
-    })
+    personService
+      .create(personObject)
+      .then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
+        setNewName('')
+      })
 
-    //setPersons(persons.concat(personObject)) // creates a new copy of the array with the new item concatenated
-    //setNewName('') // resets the value
     setNewNumber('') 
   }
 
@@ -65,6 +64,7 @@ const App = () => {
     setNewNumber(event.target.value)
   }
 
+  // filter persons with search term
   const personsToShow = showAll 
     ? persons
     : persons.filter(person => person.name.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -72,7 +72,6 @@ const App = () => {
   // event handler for name search 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value)
-
     setShowAll(false)
   }
 
