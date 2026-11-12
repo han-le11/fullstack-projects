@@ -1,3 +1,4 @@
+import Weather from './Weather.jsx'
 // Shows the basic data of a single country: capital, area, languages and flag
 const Country = ({ country }) => {
     const capital = country.capital ? country.capital.join(', '): 'No capital'
@@ -15,6 +16,8 @@ const Country = ({ country }) => {
                 ))}
             </ul>
             <img src={country.flags.png} alt={country.flags.alt} />
+
+            <h2>{country.capital && <Weather country={country} />}</h2>
 
         </div>
     )

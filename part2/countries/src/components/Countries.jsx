@@ -39,7 +39,9 @@ const Countries = ({ countries }) => {
     return (
         <ul>
             {countries.map(country => (
-                <CountryListItem key={country.name.common} country={country} />
+                <li>
+                    <CountryListItem key={country.name.common} country={country} />
+                </li>
             ))}
         </ul>
     )
