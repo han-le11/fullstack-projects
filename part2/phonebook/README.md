@@ -1,12 +1,16 @@
-# Phonebook
-Stack
+# Frontend for Phonebook
+This is the frontend for the phonebook app, a simple phonebook app where we can add name and phone numbers.
+
+Stack 
+```aiignore
 Vite + React 18 for the frontend (npm run dev).
 axios for HTTP calls.
 json-server serves db.json as a REST API on port 3001 (npm run server).
 ESLint with the React plugins.
-The README says you later wrote a real Node backend in a separate repo, han-le11/phonebook-backend.
-## Description 
-A simple phonebook app where we can add name and phone numbers.
+```
+
+## Backend 
+For the backend with Node.js of the phonebook, here is the repository [link](https://github.com/han-le11/phonebook-backend).
 
 ## File layout
 ```aiignore
@@ -27,5 +31,3 @@ phonebook/
         └── Person.jsx       # displays a single person and their number
 ```
 
-## Backend 
-For the backend with Node.js of the phonebook, here is the repository [link](https://github.com/han-le11/phonebook-backend).
