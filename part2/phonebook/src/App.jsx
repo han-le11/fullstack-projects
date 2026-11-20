@@ -32,7 +32,7 @@ const App = () => {
     setNotification({ message, type })
     setTimeout(() => {
       setNotification(null)
-    }, 3000)
+    }, 5000)
   }
 
   // event handler for form submission
@@ -73,6 +73,9 @@ const App = () => {
           notify(`Added ${returnedPerson.name}`, 'success')
         }
       )
+      .catch(error => {
+          notify(error.response.data.error, 'error')
+      })
 
     setNewNumber('') 
   }
