@@ -58,7 +58,7 @@ const App = () => {
           })
             .catch(error => {
               console.log('number update failed', error.response.data.error)
-              notify(`Information of ${exists.name} has already been removed from server`, 'error')
+              notify(error.response.data.error, 'error')
             })
       }
       return
